@@ -1,0 +1,48 @@
+# check-clean patterns — copy to `.check-clean.patterns` at the tree root
+#
+# This file exists because of a circularity: a guard that greps for your
+# product's name has to contain your product's name, and the guard ships in
+# the same repo it is protecting. The first version of check-clean.sh held
+# the real terms inline, excluded `scripts/` from its own scan, and would
+# have published the product name, the former product name, the staging
+# hostname and the stack — inside the file whose whole job was keeping them
+# out.
+#
+# So the terms live here instead, in a **dotfile at the tree root**. The
+# publish procedure copies `./*`, and that glob does not match dotfiles, so
+# this never leaves your machine. What ships is this example, with
+# placeholders.
+#
+#     cp scripts/check-clean.patterns.example .check-clean.patterns
+#     $EDITOR .check-clean.patterns
+#
+# Without it, check-clean.sh still runs — every generic rule works — but it
+# cannot recognise *your* names, and it says so loudly on every run. That
+# warning is the design: a guard that quietly stopped checking the most
+# important thing is worse than one that never checked it.
+
+# Every name that identifies you: the product, any former product name, the
+# company, the people, the staging environment. Lowercase, `|`-separated,
+# used as an extended regex. Be generous — a false positive costs one
+# rewording and a miss costs a leak.
+PRODUCT_TERMS='yourproduct|yourformername|yourcompany|yourstagingname'
+
+# Infrastructure and vendor names that would identify your stack. These are
+# separate from PRODUCT_TERMS so the failure message can tell you which kind
+# of leak you have.
+VENDOR_TERMS='examplehost|exampledb|examplequeue'
+
+# Publishing under your own name means writing it down. check-clean.sh
+# permits it in exactly two places — the copyright line of LICENCE, and the
+# clone line of README — and nowhere else, in any other wording. Leave both
+# empty if you are not publishing under a personal name.
+AUTHOR='Your Name'
+AUTHOR_HANDLE='YourGitHubHandle'
+
+# Bare lowercase identifiers from your codebase that a hand-written example
+# might carry over without anyone noticing: column names, table names, module
+# names, internal field names. Rule 3 only catches `file.py:123` and rule 4
+# only catches SCREAMING_SNAKE, so a bare column name in prose passes
+# everything else. Leave empty if you have no worked examples drawn from real
+# code; add to it the first time you de-identify one by hand.
+IDENTIFIER_TERMS='your_real_column|your_real_table|your_real_module'

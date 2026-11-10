@@ -272,6 +272,10 @@ a fresh agent and no skill — and diff the two. Two data points, one afternoon,
 and it converts "these are good" from taste into evidence. There is no
 built-in runner for this; it is a manual comparison either way.
 
+## Who made this
+
+Built by Cat Williams-Treloar, founder of [Annsa](https://annsa.ai): the plan your AI agents work from.
+
 ## License
 
 MIT.
